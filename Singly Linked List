@@ -1,0 +1,94 @@
+#include <iostream>
+
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+// Function to create a new node
+Node* newNode(int data) {
+    Node* new_node = new Node;
+    new_node->data = data;
+    new_node->next = nullptr;
+    return new_node;
+}
+
+// Function to insert a new node at the beginning
+void insertAtBeginning(Node** head_ref, int new_data) {
+    Node* new_node = newNode(new_data);
+    new_node->next = *head_ref;
+    *head_ref = new_node;
+}
+
+// Function to delete a node
+void deleteNode(Node** head_ref, int key) {
+    Node* temp = *head_ref, *prev = nullptr;
+    if (temp != nullptr && temp->data == key) {
+        *head_ref = temp->next;
+        delete temp;
+        return;
+    }
+    while (temp != nullptr && temp->data != key) {
+        prev = temp;
+        temp = temp->next;
+    }
+    if (temp == nullptr)
+        return;
+    prev->next = temp->next;
+    delete temp;
+}
+
+// Function to concatenate two linked lists
+void concatenateLists(Node** head1, Node* head2) {
+    if (*head1 == nullptr) {
+        *head1 = head2;
+        return;
+    }
+    Node* last = *head1;
+    while (last->next != nullptr) {
+        last = last->next;
+    }
+    last->next = head2;
+}
+
+// Function to print the linked list
+void printList(Node* head) {
+    Node* temp = head;
+    while (temp != nullptr) {
+        cout << temp->data << " ";
+        temp = temp->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    Node* head1 = nullptr;
+    insertAtBeginning(&head1, 3);
+    insertAtBeginning(&head1, 2);
+    insertAtBeginning(&head1, 1);
+
+    cout << "First Linked List: ";
+    printList(head1);
+
+    Node* head2 = nullptr;
+    insertAtBeginning(&head2, 6);
+    insertAtBeginning(&head2, 5);
+    insertAtBeginning(&head2, 4);
+
+    cout << "Second Linked List: ";
+    printList(head2);
+
+    concatenateLists(&head1, head2);
+
+    cout << "Concatenated Linked List: ";
+    printList(head1);
+
+    deleteNode(&head1, 3);
+
+    cout << "Linked List after deletion: ";
+    printList(head1);
+
+    return 0;
+}
