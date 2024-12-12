@@ -1,13 +1,49 @@
-books = [["BookA",400],["BookB",300],["BookC",600],["BookB",300]]
-
-def del_dup(books):
-    seen = set()
+def remove_duplicates(books):
+    """Removes duplicate entries from the list of books."""
     unique_books = []
+    unique_names = set()
     for book in books:
-        book_tuple = tuple(book)
-        if book_tuple not in seen:
-            seen.add(book_tuple)
+        if book[0] not in unique_names:
             unique_books.append(book)
-    print(unique_books)
-del_dup(books)
+            unique_names.add(book[0])
+    return unique_books
 
+def sort_by_cost(books):
+    """Sorts the books by cost in ascending order."""
+    books.sort(key=lambda x: x[1])
+    return books
+
+def count_expensive_books(books):
+    """Counts the number of books with a cost greater than 500."""
+    count = 0
+    for book in books:
+        if book[1] > 500:
+            count += 1
+    return count
+
+def filter_cheap_books(books):
+    """Creates a new list of books with a cost less than 500."""
+    cheap_books = []
+    for book in books:
+        if book[1] < 500:
+            cheap_books.append(book)
+    return cheap_books
+
+# Example usage
+books = [("BookA", 400), ("BookB", 300), ("BookC", 600), ("BookB", 300)]
+
+# Remove duplicates
+unique_books = remove_duplicates(books)
+print("Unique books:", unique_books)
+
+# Sort by cost
+sorted_books = sort_by_cost(unique_books)
+print("Sorted books:", sorted_books)
+
+# Count expensive books
+expensive_count = count_expensive_books(sorted_books)
+print("Number of expensive books:", expensive_count)
+
+# Filter cheap books
+cheap_books = filter_cheap_books(sorted_books)
+print("Cheap books:", cheap_books)
