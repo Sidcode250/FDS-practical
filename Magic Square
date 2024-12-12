@@ -1,0 +1,42 @@
+def generate_magic_square(n):
+    """Generates a magic square of size n.
+
+    Args:
+        n: The size of the magic square.
+
+    Returns:
+        A 2D list representing the magic square.
+    """
+
+    magic_square = [[0] * n for _ in range(n)]
+    i, j = 0, n // 2  # Initial position
+
+    for num in range(1, n * n + 1):
+        magic_square[i][j] = num
+
+        # Calculate the next position
+        new_i, new_j = (i - 1) % n, (j + 1) % n
+
+        # If the next position is already filled, move down one row
+        if magic_square[new_i][new_j] != 0:
+            i = (i + 1) % n
+        else:
+            i, j = new_i, new_j
+
+    return magic_square
+
+def print_magic_square(magic_square):
+    """Prints the magic square in a readable format."""
+    for row in magic_square:
+        for num in row:
+            print(f"{num:2d}", end=" ")
+        print()
+
+# Get the size of the magic square from the user
+n = int(input("Enter the size of the magic square (odd number): "))
+
+# Generate the magic square
+magic_square = generate_magic_square(n)
+
+# Print the magic square
+print_magic_square(magic_square)
