@@ -1,0 +1,50 @@
+def selection_sort(arr):
+    """Sorts an array of floating-point numbers in ascending order using selection sort."""
+    n = len(arr)
+    for i in range(n):
+        min_idx = i
+        for j in range(i+1, n):
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+
+def bubble_sort(arr):
+    """Sorts an array of floating-point numbers in ascending order using bubble sort."""
+    n = len(arr)
+    for i in range(n-1):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+
+def display_top_five(arr):
+    """Displays the top five scores from a sorted array."""
+    n = len(arr)
+    if n >= 5:
+        for i in range(n-1, n-6, -1):
+            print(arr[i])
+    else:
+        for i in range(n-1, -1, -1):
+            print(arr[i])
+
+# Get the number of students
+n = int(input("Enter the number of students: "))
+
+# Create an array to store percentages
+percentages = []
+
+# Input percentages
+for i in range(n):
+    percentage = float(input(f"Enter percentage of student {i+1}: "))
+    percentages.append(percentage)
+
+# Sort the array using selection sort
+selection_sort(percentages.copy())
+print("Sorted array using selection sort:")
+print(percentages)
+display_top_five(percentages)
+
+# Sort the array using bubble sort
+bubble_sort(percentages.copy())
+print("\nSorted array using bubble sort:")
+print(percentages)
+display_top_five(percentages)
