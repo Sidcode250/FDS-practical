@@ -1,0 +1,95 @@
+def binary_search_recursive(phonebook, name, low, high):
+    if low > high:
+        return -1
+    mid = (low + high) // 2
+    if phonebook[mid][0] == name:
+        return mid
+    elif phonebook[mid][0] > name:
+        return binary_search_recursive(phonebook, name, low, mid - 1)
+    else:
+        return binary_search_recursive(phonebook, name, mid + 1, high)
+
+def binary_search_iterative(phonebook, name):
+    low = 0
+    high = len(phonebook) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        if phonebook[mid][0] == name:
+            return mid
+        elif phonebook[mid][0] > name:
+            high = mid - 1
+        else:
+            low = mid + 1
+    return -1
+
+def insert_friend(phonebook, name, number):
+    index = binary_search_iterative(phonebook, name)
+    if index == -1:
+        phonebook.append((name, number))
+        phonebook.sort(key=lambda x: x[0])
+    else:
+        print(f"{name} is already in the phonebook.")
+
+# Example usage
+phonebook = [
+    ("Alice", 1234567890),
+    ("Bob", 9876543210),
+    ("Charlie", 5555555555)
+]
+
+name_to_search = "David"
+number_to_insert = 1111111111
+
+# Recursive binary search
+index = binary_search_recursive(phonebook, name_to_search, 0, len(phonebook) - 1)
+if index == -1:
+    print(f"{name_to_search} not found.")
+else:
+    print(f"{name_to_search} found at index {index}")
+
+# Iterative binary search
+index = binary_search_iterative(phonebook, name_to_search)
+if index == -1:
+    print(f"{name_to_search} not found.")
+else:
+    print(f"{name_to_search} found at index {index}")
+
+# Insert a new friend
+insert_friend(phonebook, name_to_search, number_to_insert)
+print(phonebook)
+def fibonacci_search(arr, x, n):
+    fib2, fib1 = 0, 1
+    fibM = fib2 + fib1
+    while fibM < n:
+        fib2 = fib1
+        fib1 = fibM
+        fibM = fib2 + fib1
+
+    offset = -1
+    while fibM > 1:
+        i = min(offset + fib2, n - 1)
+        if arr[i][0] < x:
+            fibM = fib1
+            fib1 = fib2
+            fib2 = fibM - fib1
+            offset = i
+        elif arr[i][0] > x:
+            fibM = fib2
+            fib1 = fib1 - fib2
+            fib2 = fibM - fib1
+        else:
+            return i
+    if fib1 and arr[offset + 1][0] == x:
+        return offset + 1
+    return -1
+
+def insert_friend(phonebook, name, number):
+    index = fibonacci_search(phonebook, name, len(phonebook))
+    if index == -1:
+        phonebook.append((name, number))
+        phonebook.sort(key=lambda x: x[0])
+    else:
+        print(f"{name} is already in the phonebook.")
+
+# Example usage
+# (Same as above)
