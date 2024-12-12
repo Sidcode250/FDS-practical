@@ -1,0 +1,134 @@
+#include <iostream>
+#include <ctime>
+#include <cstdlib>
+
+using namespace std;
+
+struct Appointment {
+    int start_time;
+    int end_time;
+    string patient_name;
+    Appointment* next;
+};
+
+// Function to create a new appointment
+Appointment* createAppointment(int start, int end, string name) {
+    Appointment* newAppointment = new Appointment;
+    newAppointment->start_time = start;
+    newAppointment->end_time = end;
+    newAppointment->patient_name = name;
+    newAppointment->next = nullptr;
+    return newAppointment;
+}
+
+// Function to insert a new appointment
+void insertAppointment(Appointment** head, Appointment* newAppointment) {
+    newAppointment->next = *head;
+    *head = newAppointment;
+}
+
+// Function to display free slots
+void displayFreeSlots(Appointment* head, int min_duration, int max_duration) {
+    Appointment* current = head;
+    int current_time = 0;
+    while (current != nullptr) {
+        if (current_time < current->start_time && current->start_time - current_time >= min_duration) {
+            cout << "Free slot: " << current_time << " - " << current->start_time << endl;
+        }
+        current_time = current->end_time;
+        current = current->next;
+    }
+    if (current_time < 2400 && 2400 - current_time >= min_duration) {
+        cout << "Free slot: " << current_time << " - 2400" << endl;
+    }
+}
+
+// Function to book an appointment
+void bookAppointment(Appointment** head, int start_time, int end_time, string patient_name) {
+    Appointment* newAppointment = createAppointment(start_time, end_time, patient_name);
+    insertAppointment(head, newAppointment);
+}
+
+// Function to sort the list based on start time
+void sortList(Appointment** head) {
+    Appointment* current = *head;
+    Appointment* index = nullptr;
+    if (head == nullptr) {
+        return;
+    }
+    else {
+        while (current != nullptr) {
+            index = current->next;
+            while (index != nullptr) {
+                if (current->start_time > index->start_time) {
+                    swap(current->start_time, index->start_time);
+                    swap(current->end_time, index->end_time);
+                    swap(current->patient_name, index->patient_name);
+                }
+                index = index->next;
+            }
+            current = current->next;
+        }
+    }
+}
+
+// Function to cancel an appointment
+void cancelAppointment(Appointment** head, string patient_name) {
+    Appointment* current = *head;
+    Appointment* prev = nullptr;
+    while (current != nullptr) {
+        if (current->patient_name == patient_name) {
+            if (prev == nullptr) {
+                *head = current->next;
+            } else {
+                prev->next = current->next;
+            }
+            delete current;
+            return;
+        }
+        prev = current;
+        current = current->next;
+    }
+    cout << "Appointment not found." << endl;
+}
+
+int main() {
+    Appointment* head = nullptr;
+    int min_duration = 30;
+    int max_duration = 60;
+
+    // Book random appointments
+    srand(time(0));
+    for (int i = 0; i < 10; ++i) {
+        int start_time = rand() % 2400;
+        int end_time = start_time + rand() % max_duration + min_duration;
+        string name = "Patient" + to_string(i + 1);
+        bookAppointment(&head, start_time, end_time, name);
+    }
+
+    // Display free slots
+    displayFreeSlots(head, min_duration, max_duration);
+
+    // Sort the list
+    sortList(&head);
+
+    // Display sorted appointments
+    Appointment* current = head;
+    while (current != nullptr) {
+        cout << "Start: " << current->start_time << ", End: " << current->end_time << ", Patient: " << current->patient_name << endl;
+        current = current->next;
+    }
+
+    // Cancel an appointment
+    cancelAppointment(&head, "Patient3");
+
+    // Display updated appointments
+    cout << "\nAfter cancellation:\n";
+    current = head;
+    while (current != nullptr) {
+        cout << "Start: " << current->start_time << ", End: " << current->end_time << ", Patient: " << current->patient_name << endl;
+        current = current->next;
+    }
+
+    return 0;
+}
