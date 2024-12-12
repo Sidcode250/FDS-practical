@@ -1,0 +1,13 @@
+books = [["BookA",400],["BookB",300],["BookC",600],["BookB",300]]
+
+def del_dup(books):
+    seen = set()
+    unique_books = []
+    for book in books:
+        book_tuple = tuple(book)
+        if book_tuple not in seen:
+            seen.add(book_tuple)
+            unique_books.append(book)
+    print(unique_books)
+del_dup(books)
+
