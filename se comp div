@@ -1,0 +1,32 @@
+def merge_and_sort_dob(list_a, list_b):
+    """Merges and sorts two lists of student PRNs and DOBs.
+
+    Args:
+        list_a: A list of tuples, each containing a PRN and a DOB tuple (day, month).
+        list_b: A list of tuples, each containing a PRN and a DOB tuple (day, month).
+
+    Returns:
+        A merged and sorted list of tuples, each containing a PRN and a DOB tuple (day, month).
+    """
+
+    merged_list = list_a + list_b
+    merged_list.sort(key=lambda x: (x[1][1], x[1][0]))  # Sort by month, then day
+    return merged_list
+
+# Example usage
+list_a = [
+    ("PRN1", (10, 3)),  # PRN1, 10th March
+    ("PRN2", (5, 2)),   # PRN2, 5th February
+    ("PRN3", (15, 4))  # PRN3, 15th April
+]
+
+list_b = [
+    ("PRN4", (20, 3)),  # PRN4, 20th March
+    ("PRN5", (8, 2)),   # PRN5, 8th February
+    ("PRN6", (12, 4))  # PRN6, 12th April
+]
+
+se_comp_dob = merge_and_sort_dob(list_a, list_b)
+print("Merged and sorted list of SE Computer DOBs:")
+for prn, dob in se_comp_dob:
+    print(f"PRN: {prn}, DOB: {dob[0]}/{dob[1]}")
